@@ -1,0 +1,28 @@
+name: selftest
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "47 4 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+      - run: pytest -q
+      - name: Plan this repo's own example spec
+        run: rollout-waves examples/aks_prod.yaml
+      - run: rollout-waves examples/aks_prod.yaml --check
+      - name: Audit this repo's workflows with pipeline-sentinel
+        run: |
+          pip install git+https://github.com/waleakomolafe/pipeline-sentinel
+          pipeline-sentinel .

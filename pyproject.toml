@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rollout-waves"
+version = "0.1.0"
+description = "Plans AKS/EKS node upgrades in PDB-safe waves and emits the drain commands."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Wale Akomolafe" }]
+keywords = ["kubernetes", "aks", "eks", "node-upgrade", "pdb", "sre"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Clustering",
+]
+dependencies = ["PyYAML>=6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+rollout-waves = "rollout_waves.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["rollout_waves*"]

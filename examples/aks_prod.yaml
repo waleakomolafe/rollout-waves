@@ -1,0 +1,21 @@
+# A control-plane-adjacent example: a small system pool (canary — it goes
+# first because it is smallest), a bigger user pool pinned by a real PDB
+# (5 replicas, 4 must stay up: only ONE node down at a time), and an
+# observability pool with no PDB at all.
+pools:
+  - name: system
+    nodes: 3
+    max_unavailable: 1
+    labels: "node-pool=system"
+
+  - name: user
+    nodes: 6
+    max_unavailable: 2
+    min_available: 4
+    replicas: 5
+    labels: "node-pool=user"
+
+  - name: observability
+    nodes: 4
+    max_unavailable: 2
+    labels: "node-pool=observability"
